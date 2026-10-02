@@ -1,0 +1,22 @@
+{
+  "employees": [
+    {
+      "id": "admin-001",
+      "loginId": "admin",
+      "password": "0410",
+      "name": "유과장님",
+      "position": "센터운영과장 (관리자)",
+      "department": "센터운영본부",
+      "email": "yu.admin@yaksoo.kr",
+      "phone": "010-9999-8888",
+      "joinDate": "2020-01-02",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "avatarColor": "from-slate-700 to-slate-900",
+      "calculationMode": "AUTO",
+      "extraGrantedDays": 0,
+      "customNotes": "동작구립 약수데이케어센터 연차 결재 및 전사 인사 관리 총괄"
+    }
+  ],
+  "requests": []
+}

@@ -1,0 +1,6 @@
+{
+  "name": "동작구립 약수데이케어센터 연차관리 시스템",
+  "description": "입사일 기준 법정 연차 자동 산정, 엑셀 연차대장 일괄 연동, 오늘의 연차 현황 및 관리자 결재 시스템",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

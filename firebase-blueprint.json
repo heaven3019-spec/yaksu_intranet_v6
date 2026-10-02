@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "employees": {
+      "title": "Employee",
+      "description": "Center employees and administrative managers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique Employee ID" },
+        "loginId": { "type": "string", "description": "Login ID" },
+        "password": { "type": "string", "description": "Password or PIN" },
+        "name": { "type": "string", "description": "Employee full name" },
+        "position": { "type": "string", "description": "Position and title" },
+        "joinDate": { "type": "string", "description": "Join date in YYYY-MM-DD" },
+        "role": { "type": "string", "description": "ADMIN or EMPLOYEE" },
+        "status": { "type": "string", "description": "ACTIVE or RESIGNED" },
+        "calculationMode": { "type": "string", "description": "AUTO or MANUAL" }
+      },
+      "required": ["id", "loginId", "name", "joinDate", "role"]
+    },
+    "leave_requests": {
+      "title": "Leave Request",
+      "description": "Leave requests submitted by employees and approved by managers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Request UUID" },
+        "employeeId": { "type": "string", "description": "Employee ID" },
+        "employeeName": { "type": "string", "description": "Employee Name" },
+        "type": { "type": "string", "description": "Leave type" },
+        "startDate": { "type": "string", "description": "Start date YYYY-MM-DD" },
+        "endDate": { "type": "string", "description": "End date YYYY-MM-DD" },
+        "daysCount": { "type": "number", "description": "Number of days" },
+        "reason": { "type": "string", "description": "Leave reason" },
+        "status": { "type": "string", "description": "PENDING, APPROVED, REJECTED, CANCELLED" },
+        "requestedAt": { "type": "string", "description": "ISO timestamp" }
+      },
+      "required": ["id", "employeeId", "employeeName", "type", "startDate", "endDate", "daysCount", "status"]
+    }
+  },
+  "firestore": {
+    "/employees/{employeeId}": {
+      "schema": "employees",
+      "description": "Employee credentials and profile info"
+    },
+    "/leave_requests/{requestId}": {
+      "schema": "leave_requests",
+      "description": "Leave requests and approval logs"
+    }
+  }
+}

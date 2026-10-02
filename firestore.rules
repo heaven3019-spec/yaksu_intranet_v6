@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper to validate non-empty strings with reasonable length bounds
+    function isNonEmptyString(val) {
+      return val is string && val.size() > 0 && val.size() <= 200;
+    }
+
+    // Employees collection: Validates required fields and rejects mock/test IDs
+    match /employees/{employeeId} {
+      allow read: if true;
+      allow create, update: if isNonEmptyString(request.resource.data.name)
+                            && isNonEmptyString(request.resource.data.loginId)
+                            && !employeeId.matches('emp-00[1-4]')
+                            && !employeeId.matches('.*test.*');
+      allow delete: if true;
+    }
+
+    // Leave requests collection:
+    // CRITICAL: Employee MUST exist in /employees/{employeeId} to prevent ghost/unregistered employee leave requests!
+    match /leave_requests/{requestId} {
+      allow read: if true;
+      allow create: if isNonEmptyString(request.resource.data.employeeId)
+                    && isNonEmptyString(request.resource.data.employeeName)
+                    && isNonEmptyString(request.resource.data.startDate)
+                    && isNonEmptyString(request.resource.data.endDate)
+                    && !request.resource.data.employeeId.matches('emp-00[1-4]')
+                    && !requestId.matches('req-10[1-5]')
+                    && !requestId.matches('req-201')
+                    && !requestId.matches('req-301')
+                    && !requestId.matches('req-today-[1-2]')
+                    // Enforce relational consistency: parent employee must be registered in /employees
+                    && exists(/databases/$(database)/documents/employees/$(request.resource.data.employeeId));
+      allow update: if isNonEmptyString(request.resource.data.employeeId)
+                    && isNonEmptyString(request.resource.data.employeeName)
+                    && exists(/databases/$(database)/documents/employees/$(request.resource.data.employeeId));
+      allow delete: if true;
+    }
+
+    // Fallback: Disallow any unspecified collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
